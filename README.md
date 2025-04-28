@@ -24,83 +24,102 @@ Test the C Program for the desired output.
 # PROGRAM:
 
 ## C Program to print process ID and parent Process ID using Linux API system calls
-
 ```c
-#include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-int main(void){
-    pid_t process_id;
-    pid_t p_process_id;
-    process_id = getpid();
-    p_process_id = getppid();
-    printf("The current process id:%d\n",process_id);
-    printf("The parent process id:%d\n",p_process_id);
-}
-
-```
-
-## OUTPUT:
-![alt text](images/pidcheck.jpeg)
-
-
-
-
-
-## C Program to create new process using Linux API system calls fork() and exit()
-
-```c
-#include <stdio.h>
-#include<stdlib.h>
-#include <unistd.h> 
-
-int main(){ 
-    int pid; 
-    pid=fork(); 
-    if(pid == 0) { 
-        printf("I am child my pid is %d\n",getpid()); 
-        printf("My parent pid is:%d\n",getppid()); 
-        exit(0); 
-    } 
-    else { 
-        printf("I am parent, my pid is %d\n",getpid()); 
-        sleep(100); 
-        exit(0);   
-    }
-    return 0; 
-}
-
-```
-
-## OUTPUT:
-![alt text](images/forkcheck.jpeg)
-
-
-
-
-
-
-## C Program to execute Linux system commands using Linux API system calls exec() family
-
-```c
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-int main()
-{
-	printf("Running ps with execlp\n");
-	execlp("ps", "ps", "ax", NULL);
-	printf("Done.\n");
-	exit(0);
-}
+#include <unistd.h>
 
+int main() {
+    int pid = fork();
+
+    if (pid == 0) { 
+        printf("I am child, my PID is %d\n", getpid()); 
+        printf("My parent PID is: %d\n", getppid()); 
+        sleep(2);  // Keep child alive for verification
+    } else { 
+        printf("I am parent, my PID is %d\n", getpid()); 
+        wait(NULL); 
+    }
+}
 ```
 
+## OUTPUT
+![check](./img/check.png)
+
+## C Program that uses Linux Process API - fork()
+```c
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+int main()
+{       int status;
+        printf("Running ps with execlp\n");
+        execl("ps", "ps", "ax", NULL);
+        wait(&status);
+        if (WIFEXITED(status))
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
+        else
+                puts("child did not exit successfully\n");
+        printf("Done.\n");
+printf("Running ps with execlp. Now with path specified\n");
+        execl("/bin/ps", "ps", "ax", NULL);
+        wait(&status);
+        if (WIFEXITED(status))
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
+        else
+                puts("child did not exit successfully\n");
+        printf("Done.\n");
+        exit(0);}
+```
+## OUTPUT
+![fork](./img/fork.png)
+
+## C Program to execute Linux system commands using Linux API system calls exec() family
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main() {
+    int status;
+    
+    printf("Running ps with execl\n");
+    if (fork() == 0) {
+        execl("ps", "ps", "-f", NULL);
+        perror("execl failed");
+        exit(1);
+    }
+    wait(&status);
+    
+    if (WIFEXITED(status)) {
+        printf("Child exited with status: %d\n", WEXITSTATUS(status));
+    } else {
+        printf("Child did not exit successfully\n");
+    }
+    
+    printf("Running ps with execlp (without full path)\n");
+    if (fork() == 0) {
+        execlp("ps", "ps", "-f", NULL);
+        perror("execlp failed");
+        exit(1);
+    }
+    wait(&status);
+    
+    if (WIFEXITED(status)) {
+        printf("Child exited for execlp with status: %d\n", WEXITSTATUS(status));
+    } else {
+        printf("Child did not exit successfully\n");
+    }
+    
+    printf("Done.\n");
+    return 0;
+}
+```
 
 ## OUTPUT
-![alt text](images/execcheck2.jpeg)
-
+![exec](./img/exec.png)
 
 # RESULT:
 The programs are executed successfully.
