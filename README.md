@@ -43,8 +43,8 @@ int main() {
 }
 ```
 
-## OUTPUT
-![check](./img/check.png)
+## OUTPUT:
+![alt text](images/a_output.jpeg)
 
 ## C Program that uses Linux Process API - fork()
 ```c
@@ -71,8 +71,8 @@ printf("Running ps with execlp. Now with path specified\n");
         printf("Done.\n");
         exit(0);}
 ```
-## OUTPUT
-![fork](./img/fork.png)
+## OUTPUT:
+![alt text](images/b_output.jpeg)
 
 ## C Program to execute Linux system commands using Linux API system calls exec() family
 ```c
@@ -118,8 +118,9 @@ int main() {
 }
 ```
 
-## OUTPUT
-![exec](./img/exec.png)
+## OUTPUT:
+![alt text](images/c_output.jpeg)
+
 
 # RESULT:
 The programs are executed successfully.
