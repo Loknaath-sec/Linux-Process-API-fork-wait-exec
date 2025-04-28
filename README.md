@@ -25,31 +25,24 @@ Test the C Program for the desired output.
 
 ## C Program to print process ID and parent Process ID using Linux API system calls
 
+```c
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 
+int main(void){
+    pid_t process_id;
+    pid_t p_process_id;
+    process_id = getpid();
+    p_process_id = getppid();
+    printf("The current process id:%d\n",process_id);
+    printf("The parent process id:%d\n",p_process_id);
+}
 
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-##OUTPUT
-
-
-
-
-
-
-
-
-
+## OUTPUT:
+![alt text](images/pidcheck.jpeg)
 
 
 
@@ -57,21 +50,31 @@ Test the C Program for the desired output.
 
 ## C Program to create new process using Linux API system calls fork() and exit()
 
+```c
+#include <stdio.h>
+#include<stdlib.h>
+#include <unistd.h> 
 
+int main(){ 
+    int pid; 
+    pid=fork(); 
+    if(pid == 0) { 
+        printf("I am child my pid is %d\n",getpid()); 
+        printf("My parent pid is:%d\n",getppid()); 
+        exit(0); 
+    } 
+    else { 
+        printf("I am parent, my pid is %d\n",getpid()); 
+        sleep(100); 
+        exit(0);   
+    }
+    return 0; 
+}
 
+```
 
-
-
-
-
-
-
-
-
-
-##OUTPUT
-
-
+## OUTPUT:
+![alt text](images/forkcheck.jpeg)
 
 
 
@@ -80,48 +83,23 @@ Test the C Program for the desired output.
 
 ## C Program to execute Linux system commands using Linux API system calls exec() family
 
+```c
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+	printf("Running ps with execlp\n");
+	execlp("ps", "ps", "ax", NULL);
+	printf("Done.\n");
+	exit(0);
+}
+
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##OUTPUT
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## OUTPUT
+![alt text](images/execcheck2.jpeg)
 
 
 # RESULT:
